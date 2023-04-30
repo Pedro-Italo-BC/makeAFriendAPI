@@ -11,6 +11,6 @@ export interface FilteredPetsProps {
 
 export interface PetsRepository {
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>
-
   findManyFilteredPets(data: FilteredPetsProps): Promise<Pet[]>
+  findById(id: string): Promise<Pet | null>
 }
