@@ -12,7 +12,7 @@ describe('Register Gym Use Case', () => {
     sut = new RegisterPetUseCase(petsRepository)
   })
 
-  it('should be ableto register a new pet', async () => {
+  it('should be able to register a new pet', async () => {
     const { pet } = await sut.execute({
       animal: 'Cachorro',
       animalPort: 'Small',
