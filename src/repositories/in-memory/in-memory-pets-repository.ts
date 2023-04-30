@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import { PetsRepository } from '../pets-repository'
+import { FilteredPetsProps, PetsRepository } from '../pets-repository'
 import { Prisma, Pet } from '@prisma/client'
 
 export class InMemoryPetsRepository implements PetsRepository {
@@ -24,10 +24,18 @@ export class InMemoryPetsRepository implements PetsRepository {
     return pet
   }
 
-  async findManyPetsByCity(city: string) {
-    const pets = this.items.filter(
-      (pet) => pet.city.toLowerCase() === city.toLowerCase(),
-    )
+  async findManyFilteredPets(data: FilteredPetsProps) {
+    const pets = this.items.filter((pet) => {
+      const petEntries = Object.entries(pet)
+      const dataEntries = Object.entries(data)
+      return dataEntries.every(([dataKey, dataValue]) => {
+        return petEntries.some(
+          ([petKey, petValue]) =>
+            petKey.toLowerCase() === dataKey.toLowerCase() &&
+            String(petValue).toLowerCase() === String(dataValue).toLowerCase(),
+        )
+      })
+    })
 
     return pets
   }
