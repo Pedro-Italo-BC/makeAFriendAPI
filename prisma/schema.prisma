@@ -34,13 +34,13 @@ model Pet {
 model Org {
   id String @id @default(uuid())
 
-  name     String
-  phone    String
-  email    String
-  cep      String
-  password String
-  address  String
-  role     Role   @default(ADMIN)
+  name          String
+  phone         String
+  email         String
+  cep           String
+  password_hash String
+  address       String
+  role          Role   @default(ADMIN)
 
   Pet Pet[]
 
