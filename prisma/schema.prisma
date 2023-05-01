@@ -36,7 +36,7 @@ model Org {
 
   name          String
   phone         String
-  email         String
+  email         String @unique
   cep           String
   password_hash String
   address       String
