@@ -60,24 +60,4 @@ describe('Get Pet Info Use Case', () => {
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
-
-  it('should not be able to get pet with wrong id', async () => {
-    const createdPet = await petsRepository.create({
-      animal: 'Cachorro',
-      animal_port: 'small',
-      birth_date: '30/04/2007',
-      city: 'São Paulo',
-      description: 'Um doguinho bem legal',
-      name: 'Snoopy',
-      org_id: 'not-existing-id',
-    })
-
-    const petId = createdPet.id
-
-    await expect(() =>
-      sut.execute({
-        petId,
-      }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
-  })
 })

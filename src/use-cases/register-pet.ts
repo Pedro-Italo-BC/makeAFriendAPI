@@ -1,5 +1,7 @@
 import { Pet } from '@prisma/client'
 import { PetsRepository } from '@/repositories/pets-repository'
+import { OrgsRepository } from '@/repositories/orgs-repository'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 interface RegisterPetUseCaseRequest {
   name: string
@@ -16,7 +18,10 @@ interface RegisterPetUseCaseResponse {
 }
 
 export class RegisterPetUseCase {
-  constructor(private petsRepository: PetsRepository) {}
+  constructor(
+    private petsRepository: PetsRepository,
+    private orgsRepository: OrgsRepository,
+  ) {}
 
   async execute({
     animal,
@@ -27,6 +32,12 @@ export class RegisterPetUseCase {
     name,
     orgId,
   }: RegisterPetUseCaseRequest): Promise<RegisterPetUseCaseResponse> {
+    const doesOrgIdExist = await this.orgsRepository.findById(orgId)
+
+    if (!doesOrgIdExist) {
+      throw new InvalidCredentialsError()
+    }
+
     const pet = await this.petsRepository.create({
       animal,
       animal_port: animalPort,

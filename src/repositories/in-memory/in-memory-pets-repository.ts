@@ -1,5 +1,9 @@
 import { randomUUID } from 'crypto'
-import { FilteredPetsProps, PetsRepository } from '../pets-repository'
+import {
+  FilteredPetsProps,
+  PetsRepository,
+  UpdatePetsProps,
+} from '../pets-repository'
 import { Prisma, Pet } from '@prisma/client'
 
 export class InMemoryPetsRepository implements PetsRepository {
@@ -46,6 +50,22 @@ export class InMemoryPetsRepository implements PetsRepository {
     if (!pet) {
       return null
     }
+
+    return pet
+  }
+
+  async updateById(id: string, data: UpdatePetsProps) {
+    const index = this.items.findIndex((item) => item.id === id)
+
+    if (index < 0) {
+      return null
+    }
+
+    const oldPet = this.items[index]
+
+    const pet = { ...oldPet, ...data }
+
+    this.items[index] = pet
 
     return pet
   }

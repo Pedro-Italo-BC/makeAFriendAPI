@@ -1,5 +1,9 @@
 import { Prisma } from '@prisma/client'
-import { FilteredPetsProps, PetsRepository } from '../pets-repository'
+import {
+  FilteredPetsProps,
+  PetsRepository,
+  UpdatePetsProps,
+} from '../pets-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPetsRepository implements PetsRepository {
@@ -27,5 +31,11 @@ export class PrismaPetsRepository implements PetsRepository {
     })
 
     return pets
+  }
+
+  async updateById(id: string, data: UpdatePetsProps) {
+    const pet = await prisma.pet.update({ data, where: { id } })
+
+    return pet
   }
 }
